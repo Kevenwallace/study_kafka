@@ -1,43 +1,32 @@
 package ecomerce.kafka;
 
-import java.util.Properties;
+import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
-
-import org.apache.kafka.clients.producer.Callback;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerConfig;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.StringSerializer;
 
 public class NewOrderMain {
 
 	
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
-		var producer = new KafkaProducer<String, String>(properties());
-		var value = "1222333,keven wallace,12234444";
-		var key = UUID.randomUUID().toString();
-		var record = new ProducerRecord<>("ECOMMERCE_NEW_ORDER", key, value);
-		var email = "thankyou we are analizin you order";
-		var emailRecord = new ProducerRecord<>("ECOMMERCE_SEND_EMAIL", email,email);
-        Callback callback = (data, ex) -> {
-        	if (ex != null ) {
-        		ex.printStackTrace();
-        		return;
-        	} else {
-        		System.out.println("passou");
-        	}
-        };
-		producer.send(record, callback).get();
-		producer.send(emailRecord, callback).get();
+		try (var kafkaDispatcher = new KafkaDispatcher<Order>()) {
+			try (var kafkaDispatcher1 = new KafkaDispatcher<String>()) {
+				for (int i = 0; i < 10; i ++) {
+				var key = UUID.randomUUID().toString();
+				
+				var value = "1222333,keven wallace,12234444";
+				var amout = new BigDecimal(1111111111);
+				var order = new Order(key, value, amout);
+				kafkaDispatcher.send("ECOMMERCE_NEW_ORDER", key, order);		
+				var email = "congratulations for you buy";
+				kafkaDispatcher1.send("ECOMMERCE_SEND_EMAIL", key,email);}
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
-		    }
-    private static Properties properties() {
-         var properties = new Properties();
-         properties.setProperty(ProducerConfig.BOOTSTRAP_SERVERS_CONFIG,"127.0.0.1:9092");
-         properties.setProperty(ProducerConfig.KEY_SERIALIZER_CLASS_CONFIG,StringSerializer.class.getName());
-         properties.setProperty(ProducerConfig.VALUE_SERIALIZER_CLASS_CONFIG, StringSerializer.class.getName());
-         return properties;          
-	}
+	    }
+
 
 }
