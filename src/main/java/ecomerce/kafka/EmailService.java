@@ -1,5 +1,7 @@
 package ecomerce.kafka;
 
+import java.util.Map;
+
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 
 public class EmailService {
@@ -8,7 +10,7 @@ public class EmailService {
 	public static void main(String[] args) {
 		
 		var emailService = new EmailService();
-		var service = new KafkaService(EmailService.class.getSimpleName(),"ECOMMERCE_SEND_EMAIL", emailService::parse, String.class);
+		var service = new KafkaService<String>(EmailService.class.getSimpleName(),"ECOMMERCE_SEND_EMAIL", emailService::parse, String.class, Map.of());
 		
 		service.run();
 		

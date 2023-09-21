@@ -2,6 +2,7 @@ package ecomerce.kafka;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.Map;
 import java.util.Properties;
 import java.util.regex.Pattern;
 
@@ -13,18 +14,20 @@ public class KafkaService<T> {
 	private final KafkaConsumer<String, T> consumer;
 	private final ConsumerFunction<T> parse;
 	private Class<T> type;
+
 	
-	KafkaService(String simpleName, String topic, ConsumerFunction<T> parse, Class<T> type) {
+	KafkaService(String simpleName, String topic, ConsumerFunction<T> parse, Class<T> type, Map<String, String> map) {
 		this.type = type;
 		this.parse = parse;
-		this.consumer = new KafkaConsumer<>(properties(simpleName));
+		this.consumer = new KafkaConsumer<>(properties(simpleName, map));
 		consumer.subscribe(Collections.singletonList(topic));
 
 	}
 	
-	KafkaService(String simpleName, Pattern topic, ConsumerFunction<T> parse, Class<T> type) {
+	KafkaService(String simpleName, Pattern topic, ConsumerFunction<T> parse, Class<T> type, Map<String, String> map) {
 		this.parse = parse;
-		this.consumer = new KafkaConsumer<>(properties(simpleName));
+		this.type = type;
+		this.consumer = new KafkaConsumer<>(properties(simpleName, map));
 		consumer.subscribe(topic);
 
 	}
@@ -44,13 +47,14 @@ public class KafkaService<T> {
 		}
 	}
 	
-	private Properties properties(String simpleName) {
+	private Properties properties(String simpleName, Map<String, String> map) {
 		var properties = new Properties();
 		properties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "127.0.0.1:9092");
 		properties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class.getName());
 		properties.setProperty(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, GsonDeserializer.class.getName());
 		properties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, simpleName);
 		properties.setProperty(GsonDeserializer.TYPE_CONFIG, type.getName());
+		properties.putAll(map);
 		return properties;
 	}
 

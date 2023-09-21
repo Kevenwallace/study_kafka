@@ -1,13 +1,21 @@
 package ecomerce.kafka;
 
+import java.util.Map;
 import java.util.regex.Pattern;
 
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
+import org.apache.kafka.common.serialization.StringDeserializer;
 
 public class LogService {
 	public static void main(String[] args) {
 		var logService = new LogService();
-		var kafkaService = new KafkaService(LogService.class.getSimpleName(),Pattern.compile("ECOMMERCE.*"), logService::parse, String.class);
+		var kafkaService = new KafkaService(
+				LogService.class.getSimpleName(),
+				Pattern.compile("ECOMMERCE.*"),
+				logService::parse,
+				String.class,
+				Map.of(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class));
 		
 		kafkaService.run();
 	}
