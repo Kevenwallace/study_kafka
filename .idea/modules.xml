@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/ecomerce.iml" filepath="$PROJECT_DIR$/ecomerce.iml" />
+      <module fileurl="file://$PROJECT_DIR$/common-kafka.iml" filepath="$PROJECT_DIR$/common-kafka.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-email.iml" filepath="$PROJECT_DIR$/service-email.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-fraudDetector.iml" filepath="$PROJECT_DIR$/service-fraudDetector.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-log.iml" filepath="$PROJECT_DIR$/service-log.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-neworder.iml" filepath="$PROJECT_DIR$/service-neworder.iml" />
+      <module fileurl="file://$PROJECT_DIR$/service-users.iml" filepath="$PROJECT_DIR$/service-users.iml" />
     </modules>
   </component>
 </project>

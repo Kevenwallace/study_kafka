@@ -27,7 +27,7 @@ public class KafkaDispatcher<T> implements Closeable{
         return properties;          
 	}
 
-	public Object send(String topic, String key, T value) throws InterruptedException, ExecutionException { 
+	public void send(String topic, String key, T value) throws InterruptedException, ExecutionException {
 		var record = new ProducerRecord<>(topic, key, value);
 		Callback callback = (data, ex) -> {
         	if (ex != null ) {
@@ -38,7 +38,6 @@ public class KafkaDispatcher<T> implements Closeable{
         	}
         };
         this.producer.send(record, callback).get();
-		return null;
 	}
 
 	@Override

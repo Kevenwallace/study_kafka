@@ -3,6 +3,8 @@ package br.com.ecommerce;
 import java.math.BigDecimal;
 
 public class Order {
+
+
 	@SuppressWarnings("unused")
 	private final String userId, orderId;
 	@SuppressWarnings("unused")
@@ -15,6 +17,13 @@ public class Order {
 		this.orderId = orderId;
 		this.value = value;
 	}
-	
-	
+
+
+	public String getUserId() {
+		return userId;
+	}
+
+    public BigDecimal getValue() {
+    	return this.value;
+	}
 }

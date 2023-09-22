@@ -4,6 +4,7 @@ import java.time.Duration;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
+import java.util.concurrent.ExecutionException;
 import java.util.regex.Pattern;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
@@ -41,7 +42,13 @@ public class KafkaService<T> {
 			if (!records.isEmpty()) {
 				System.out.println("encontrei"+records.count()+ "registros");
 				for (var record: records) {
-					parse.consumer(record);
+					try {
+						parse.consumer(record);
+					} catch (ExecutionException e) {
+						throw new RuntimeException(e);
+					} catch (InterruptedException e) {
+						throw new RuntimeException(e);
+					}
 				}
 			}
 		}

@@ -11,6 +11,7 @@
         <module>service-log</module>
         <module>service-email</module>
         <module>service-neworder</module>
+        <module>service-users</module>
     </modules>
     <build>
         <plugins>

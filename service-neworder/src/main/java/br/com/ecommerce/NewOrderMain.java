@@ -2,6 +2,7 @@ package br.com.ecommerce;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -15,7 +16,7 @@ public class NewOrderMain {
 				var key = UUID.randomUUID().toString();
 				
 				var value = "1222333,keven wallace,12234444";
-				var amout = new BigDecimal(1111111111);
+				var amout = new BigDecimal(Math.random() * 5000 + 1);
 				var order = new Order(key, value, amout);
 				kafkaDispatcher.send("ECOMMERCE_NEW_ORDER", key, order);		
 				var email = "congratulations for you buy";
